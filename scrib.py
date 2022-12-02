@@ -7,6 +7,11 @@ class Node:
         self.nextval = None
         self.prevval = None
 
+class Point:
+    def __init__(self,x=0,y=0):
+        self.x = x
+        self.y = y
+
 class ThreeD_Point:
     def __init__(self,x=0,y=0,z=0):
         self.x = x
@@ -14,7 +19,10 @@ class ThreeD_Point:
         self.z = z
 
 def manhattan_distance(p1:ThreeD_Point, p2:ThreeD_Point):
-    return abs(p1.x - p2.x) + abs(p1.y - p2.y) + abs(p1.z - p2.z)
+    if type(p1) is Point:
+        return abs(p1.x - p2.x) + abs(p1.y - p2.y)
+    elif type(p1) is ThreeD_Point:
+        return abs(p1.x - p2.x) + abs(p1.y - p2.y) + abs(p1.z - p2.z)
 
 def find_int(input_string):
     result = re.search(r"(\d+)",input_string)
