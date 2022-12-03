@@ -8,11 +8,44 @@ def part1(input):
 
     list_input = []
 
+    total_score = 0
     for l in input_lines:
-        list_input.append(l.split())
+        item = ""
+        a = l[:int(len(l)/2)]
+        b = l[int(len(l)/2):]
+        for c in list(a):
+            for d in list(b):
+                if c == d:
+                    item = c
 
-    for d in list_input:
-        (a, b) = d
+        if item in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+            score = int(ord(item) - ord('A')) + 27
+        else:
+            score = int(ord(item) - ord('a')) + 1
+        total_score = total_score + score
+
+    print(total_score)
+
+    total_score = 0
+    for index in range(int(len(input_lines)/3)):
+        first = input_lines[index*3]
+        second = input_lines[index*3+1]
+        third = input_lines[index*3+2]
+
+        item = ""
+        for c in list(first):
+            for d in list(second):
+                for e in list(third):
+                    if c == d == e:
+                        item = c
+
+        if item in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+            score = int(ord(item) - ord('A')) + 27
+        else:
+            score = int(ord(item) - ord('a')) + 1
+        total_score = total_score + score
+    print(total_score)
+
 
     # dirs = [d for (d,v) in list_input]
 
