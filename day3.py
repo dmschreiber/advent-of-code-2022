@@ -11,14 +11,14 @@ def part1(input):
     total_score = 0
     for l in input_lines:
         item = ""
-        a = l[:int(len(l)/2)]
-        b = l[int(len(l)/2):]
+        (a,b) = (l[:int(len(l)/2)],l[int(len(l)/2):])
+
         for c in list(a):
             for d in list(b):
                 if c == d:
                     item = c
 
-        if item in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+        if item.isupper():
             score = int(ord(item) - ord('A')) + 27
         else:
             score = int(ord(item) - ord('a')) + 1
@@ -28,9 +28,7 @@ def part1(input):
 
     total_score = 0
     for index in range(int(len(input_lines)/3)):
-        first = input_lines[index*3]
-        second = input_lines[index*3+1]
-        third = input_lines[index*3+2]
+        (first,second,third) = input_lines[index*3:index*3+3]
 
         item = ""
         for c in list(first):
@@ -39,11 +37,12 @@ def part1(input):
                     if c == d == e:
                         item = c
 
-        if item in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
-            score = int(ord(item) - ord('A')) + 27
+        if item.isupper():
+            score = ord(item) - ord('A') + 27
         else:
-            score = int(ord(item) - ord('a')) + 1
+            score = ord(item) - ord('a') + 1
         total_score = total_score + score
+
     print(total_score)
 
 
