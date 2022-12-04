@@ -6,8 +6,6 @@ def part1(input):
     with open(input) as f:
         input_lines = f.read().splitlines()
 
-    list_input = []
-
     total_score = 0
     count = 0
     for l in input_lines:
@@ -23,8 +21,8 @@ def part1(input):
         elif b1 <= a1 and b2 >= a2:
             count = count + 1
 
-
     print(count)
+
     count = 0
     for l in input_lines:
         (a,b) = l.split(",")
@@ -34,9 +32,9 @@ def part1(input):
         (a1,a2) = (int(a1),int(a2))
         (b1,b2) = (int(b1), int(b2))
 
-        if a1 <= b1 and a2 >= b1:
+        if a1 <= b1 <= a2:
             count = count + 1
-        elif b1 <= a1 and b2 >= a1:
+        elif b1 <= a1 <= b2:
             count = count + 1
     print(count)
 
