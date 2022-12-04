@@ -9,15 +9,39 @@ def part1(input):
     list_input = []
 
     total_score = 0
+    count = 0
     for l in input_lines:
-        score = 0
-        total_score = total_score + score
+        (a,b) = l.split(",")
 
-    print(total_score)
+        (a1,a2) = a.split("-")
+        (b1,b2) = b.split("-")
+        (a1,a2) = (int(a1),int(a2))
+        (b1,b2) = (int(b1), int(b2))
 
+        if a1 <= b1 and a2 >= b2:
+            count = count + 1
+        elif b1 <= a1 and b2 >= a2:
+            count = count + 1
+
+
+    print(count)
+    count = 0
+    for l in input_lines:
+        (a,b) = l.split(",")
+
+        (a1,a2) = a.split("-")
+        (b1,b2) = b.split("-")
+        (a1,a2) = (int(a1),int(a2))
+        (b1,b2) = (int(b1), int(b2))
+
+        if a1 <= b1 and a2 >= b1:
+            count = count + 1
+        elif b1 <= a1 and b2 >= a1:
+            count = count + 1
+    print(count)
 
 if __name__ == '__main__':
-    input_file = "./data/day3_input.txt"
+    input_file = "./data/day4_input.txt"
     part1(input_file)
 
     # lst = [1, 4, 4, 4, 2, 5, 6, 6, 7, 8, 9, 10]
