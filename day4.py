@@ -9,12 +9,7 @@ def part1(input):
     total_score = 0
     count = 0
     for l in input_lines:
-        (a,b) = l.split(",")
-
-        (a1,a2) = a.split("-")
-        (b1,b2) = b.split("-")
-        (a1,a2) = (int(a1),int(a2))
-        (b1,b2) = (int(b1), int(b2))
+        (a1,a2), (b1,b2) = [(int(n[0]), int(n[1])) for n in [z.split("-") for z in l.split(",")]]
 
         if a1 <= b1 and a2 >= b2:
             count = count + 1
@@ -25,12 +20,7 @@ def part1(input):
 
     count = 0
     for l in input_lines:
-        (a,b) = l.split(",")
-
-        (a1,a2) = a.split("-")
-        (b1,b2) = b.split("-")
-        (a1,a2) = (int(a1),int(a2))
-        (b1,b2) = (int(b1), int(b2))
+        (a1,a2), (b1,b2) = [(int(n[0]), int(n[1])) for n in [z.split("-") for z in l.split(",")]]
 
         if a1 <= b1 <= a2:
             count = count + 1
