@@ -1,5 +1,6 @@
 import re
 from collections import Counter
+import os
 
 class Node:
     def __init__(self, dataval=None):
@@ -23,6 +24,10 @@ def manhattan_distance(p1:ThreeD_Point, p2:ThreeD_Point):
         return abs(p1.x - p2.x) + abs(p1.y - p2.y)
     elif type(p1) is ThreeD_Point:
         return abs(p1.x - p2.x) + abs(p1.y - p2.y) + abs(p1.z - p2.z)
+
+def find_filename(input_string):
+    result = os.path.basename(input_string)
+    return result
 
 def find_int(input_string):
     result = re.search(r"(\d+)",input_string)
