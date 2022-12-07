@@ -11,14 +11,26 @@ def get_size(dir,dirs, which):
             total = total + get_size(dir,dirs,d)
     return total
 
+def get_size2(items, which):
+    # print("get_size {}".format(which))
+    total = 0
+    if which in items.keys():
+        for i in items[which]:
+            if i[0] == "file":
+                total = total + i[1]
+            else:
+                total = total + get_size2(items,i[1])
+
+    return total
+
 def part1(input):
     with open(input) as f:
         input_lines = f.read().splitlines()
 
     count = 0
     path = "/"
-    dir = {}
-    dirs = {}
+    all_items = {}
+
     read = False
     for l in input_lines:
         items = l.split()
@@ -28,21 +40,21 @@ def part1(input):
 
         if read:
             if items[0] == "dir":
-                if path in dirs.keys():
-                    if path == "/":
-                        dirs[path].append(path + items[1])
-                    else:
-                        dirs[path].append(path + "/" + items[1])
+                if path == "/":
+                    child_path = path + items[1]
                 else:
-                    if path == "/":
-                        dirs[path] = [path + items[1]]
-                    else:
-                        dirs[path] = [path + "/" + items[1]]
+                    child_path = path + "/" + items[1]
 
-            elif path in dir.keys():
-                dir[path] = dir[path] + int(items[0])
+                if path in all_items.keys():
+                    all_items[path].append((items[0], child_path))
+                else:
+                    all_items[path] = [(items[0], child_path)]
+
             else:
-                dir[path] = int(items[0])
+                if path in all_items.keys():
+                    all_items[path].append(("file", int(items[0])))
+                else:
+                    all_items[path] = [("file",int(items[0]))]
 
         elif items[0] == "$":
             if items[1] == "cd":
@@ -59,27 +71,21 @@ def part1(input):
             elif items[1] == "ls":
                 read = True
 
-    total = 0
+    new_total = 0
+    for d in all_items:
+        if get_size2(all_items,d) < 100000:
+            new_total = new_total + get_size2(all_items,d)
 
-    all_dirs = list(dir.keys())
-    all_dirs.extend(list(dirs.keys()))
-    all_dirs = set(all_dirs)
-    all_dirs = list(all_dirs)
+    print(new_total)
 
-    for d in all_dirs:
-        if get_size(dir, dirs, d) < 100000:
-            total = total + get_size(dir, dirs, d)
-
-
-    print(total)
-
-    target = 30000000 - (70000000 - get_size(dir,dirs,"/"))
+    target = 30000000 - (70000000 - get_size2(all_items,"/"))
     options = []
-    for d in all_dirs:
-        if get_size(dir, dirs, d) > target:
-            options.append(get_size(dir, dirs, d))
+    for d in all_items:
+        if get_size2(all_items, d) > target:
+            options.append(get_size2(all_items, d))
     options.sort()
-    print(options[0])
+
+    print("{}".format(options[0]))
 
 
 if __name__ == '__main__':
