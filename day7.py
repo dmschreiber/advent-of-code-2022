@@ -1,16 +1,6 @@
 import re
 import scrib
 
-def get_size(dir,dirs, which):
-    # print("get_size {}".format(which))
-    total = 0
-    if which in dir.keys():
-        total = total + dir[which]
-    if which in dirs.keys():
-        for d in dirs[which]:
-            total = total + get_size(dir,dirs,d)
-    return total
-
 def get_size2(items, which):
     # print("get_size {}".format(which))
     total = 0
@@ -40,6 +30,7 @@ def part1(input):
 
         if read:
             if items[0] == "dir":
+
                 if path == "/":
                     child_path = path + items[1]
                 else:
