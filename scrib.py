@@ -19,6 +19,19 @@ class ThreeD_Point:
         self.y = y
         self.z = z
 
+
+def add_point(p1,p2):
+    if type(p1) is Point:
+        return Point(p1.x + p2.x, p1.y + p2.y)
+    elif type(p1) is ThreeD_Point:
+        return ThreeD_Point(p1.x + p2.x, p1.y + p2.y, p1.z + p2.z)
+
+def mult_point(p1,d):
+    if type(p1) is Point:
+        return Point(p1.x * d, p1.y * d)
+    elif type(p1) is ThreeD_Point:
+        return Point(p1.x * d, p1.y * d, p1.z * d)
+
 def manhattan_distance(p1:ThreeD_Point, p2:ThreeD_Point):
     if type(p1) is Point:
         return abs(p1.x - p2.x) + abs(p1.y - p2.y)

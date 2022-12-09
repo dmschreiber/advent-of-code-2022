@@ -11,16 +11,11 @@ def part1(input):
     head = scrib.Point()
     tail = scrib.Point()
     visited = []
+    dirs = {"U":scrib.Point(0,1), "D":scrib.Point(0,-1), "L":scrib.Point(-1,0), "R":scrib.Point(1,0)}
+
     for l in input_lines:
         (a,b) = l.split()
-        if a == "U":
-            head.y = head.y + int(b)
-        if a == "D":
-            head.y = head.y - int(b)
-        if a == "R":
-            head.x = head.x + int(b)
-        if a == "L":
-            head.x = head.x - int(b)
+        head = scrib.add_point(head, scrib.mult_point(dirs[a],int(b)))
 
         while abs(head.x - tail.x) > 1 or abs(head.y - tail.y) > 1:
             # too far
@@ -40,6 +35,7 @@ def part1(input):
     # part 2
     head = scrib.Point()
     tails = [scrib.Point() for p in range(10)]
+    dirs = {"U":scrib.Point(0,1), "D":scrib.Point(0,-1), "L":scrib.Point(-1,0), "R":scrib.Point(1,0)}
 
     visited = []
     for l in input_lines:
@@ -47,14 +43,7 @@ def part1(input):
         how_many = int(b)
         while how_many > 0:
             how_many = how_many - 1
-            if a == "U":
-                tails[0].y = tails[0].y + 1
-            if a == "D":
-                tails[0].y = tails[0].y - 1
-            if a == "R":
-                tails[0].x = tails[0].x + 1
-            if a == "L":
-                tails[0].x = tails[0].x - 1
+            tails[0] = scrib.add_point(tails[0],dirs[a])
 
             # print(tails[0].x,tails[0].y)
             for i in range(1,10):
@@ -75,19 +64,12 @@ def part1(input):
 
     unique = set(visited)
     print(len(unique))
-    # not 2595
+
 
 if __name__ == '__main__':
     d = scrib.find_filename(__file__)
     d = d[:len(d)-3]
 
     input_file = "./data/" + d + "_input.txt"
-    # input_file = "./data/day8_test.txt"
-    part1(input_file)
 
-    # lst = [1, 4, 4, 4, 2, 5, 6, 6, 7, 8, 9, 10]
-    # print(scrib.find_most_frequent(lst))
-    # print(scrib.find_occurances(lst)[4])
-    # print(scrib.find_even(lst))
-    # print(scrib.capitalize_words(["python", "javaScript", "c++"]))
-    # print(scrib.reverse_list(lst))
+    part1(input_file)
