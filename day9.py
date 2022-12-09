@@ -25,28 +25,12 @@ def part1(input):
         while abs(head.x - tail.x) > 1 or abs(head.y - tail.y) > 1:
             # too far
             if head.x == tail.x:
-                if head.y > tail.y:
-                    tail.y = tail.y + 1
-                else:
-                    tail.y = tail.y - 1
+                tail.y = tail.y + (head.y - tail.y) / abs(head.y - tail.y)
             elif head.y == tail.y:
-                if head.x > tail.x:
-                    tail.x = tail.x + 1
-                else:
-                    tail.x = tail.x - 1
+                tail.x = tail.x + (head.x - tail.x) / abs(head.x - tail.x)
             else:
-                if head.y > tail.y and head.x > tail.x:
-                    tail.y = tail.y + 1
-                    tail.x = tail.x + 1
-                elif head.y > tail.y and head.x < tail.x:
-                    tail.y = tail.y + 1
-                    tail.x = tail.x - 1
-                elif head.y < tail.y and head.x < tail.x:
-                    tail.y = tail.y - 1
-                    tail.x = tail.x - 1
-                else:
-                    tail.y = tail.y - 1
-                    tail.x = tail.x + 1
+                tail.y = tail.y + (head.y - tail.y) / abs(head.y - tail.y)
+                tail.x = tail.x + (head.x - tail.x) / abs(head.x - tail.x)
 
             visited.append((tail.x,tail.y))
 
@@ -55,7 +39,7 @@ def part1(input):
 
     # part 2
     head = scrib.Point()
-    tails = [scrib.Point(),scrib.Point(),scrib.Point(),scrib.Point(),scrib.Point(),scrib.Point(),scrib.Point(),scrib.Point(),scrib.Point(),scrib.Point()]
+    tails = [scrib.Point() for p in range(10)]
 
     visited = []
     for l in input_lines:
@@ -80,30 +64,12 @@ def part1(input):
                 while abs(head.x - tail.x) > 1 or abs(head.y - tail.y) > 1:
                     # too far
                     if head.x == tail.x:
-                        if head.y > tail.y:
-                            tail.y = tail.y + 1
-                        else:
-                            tail.y = tail.y - 1
+                        tail.y = tail.y + (head.y - tail.y) / abs(head.y - tail.y)
                     elif head.y == tail.y:
-                        if head.x > tail.x:
-                            tail.x = tail.x + 1
-                        else:
-                            tail.x = tail.x - 1
+                        tail.x = tail.x + (head.x - tail.x) / abs(head.x - tail.x)
                     else:
-                        if head.y > tail.y and head.x > tail.x:
-                            tail.y = tail.y + 1
-                            tail.x = tail.x + 1
-                        elif head.y > tail.y and head.x < tail.x:
-                            tail.y = tail.y + 1
-                            tail.x = tail.x - 1
-                        elif head.y < tail.y and head.x < tail.x:
-                            tail.y = tail.y - 1
-                            tail.x = tail.x - 1
-                        else:
-                            tail.y = tail.y - 1
-                            tail.x = tail.x + 1
-                    tails[i].x = tail.x
-                    tails[i].y = tail.y
+                        tail.y = tail.y + (head.y - tail.y) / abs(head.y - tail.y)
+                        tail.x = tail.x + (head.x - tail.x) / abs(head.x - tail.x)
 
                     visited.append((tails[9].x,tails[9].y))
 
