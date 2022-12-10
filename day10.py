@@ -56,8 +56,8 @@ def part1(input):
     print(output[200:240])
     #10160 wrong 10:30
     #14780 wrong 12:20
-    # right part 1 in 29:36
-    # right part 2 in 1:33:00
+    # right part 1 in 29:36 (error in creating signal value after the cycle not during)
+    # right part 2 in 1:33:00 (error in noop for cycle 20 - indenting problem)
 
 
 def create_output(cycle, output, x):
