@@ -27,49 +27,21 @@ def part1(input):
 
     output = ""
     for l in input_lines:
-        print("{}, cycle={},x={}".format(l, cycle, x))
-        if l == "noop":
-            cycle = cycle + 1
-            if cycle in which:
-                print(l)
-                print(cycle,cycle * x)
-                total_ss = total_ss + cycle * x
+        cycle = cycle + 1
+        if cycle in which:
+            total_ss = total_ss + cycle * x
 
-            print_state(x, cycle, output)
-            if x - 1 <= (cycle % 40 - 1) <= x + 1:
-                output = output + "#"
-            else:
-                output = output + "."
+        output = create_output(cycle, output, x)
 
-        else:
+        if l != "noop":
             (a,b) = l.split()
             (a,b) = (a,int(b))
-
             cycle = cycle + 1
 
             if cycle in which:
-                print("before add {} signal is {}".format(cycle,cycle * x))
                 total_ss = total_ss + cycle * x
 
-            print_state(x,cycle,output)
-
-            if x - 1 <= (cycle%40 - 1) <= x + 1:
-                output = output + "#"
-            else:
-                output = output + "."
-
-            cycle = cycle + 1
-
-            if cycle in which:
-                print(l)
-                print(cycle,cycle * x)
-                total_ss = total_ss + cycle * x
-
-            print_state(x,cycle,output)
-            if x - 1 <= (cycle%40 - 1) <= x + 1:
-                output = output + "#"
-            else:
-                output = output + "."
+            output = create_output(cycle, output, x)
 
             x = x + b
 
@@ -86,6 +58,14 @@ def part1(input):
     #14780 wrong 12:20
     # right part 1 in 29:36
     # right part 2 in 1:33:00
+
+
+def create_output(cycle, output, x):
+    if x - 1 <= (cycle - 1) % 40 <= x + 1:
+        output = output + "#"
+    else:
+        output = output + " "
+    return output
 
 
 if __name__ == '__main__':
