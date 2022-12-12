@@ -71,6 +71,66 @@ def reverse_list(lst):
     return lst[::-1]
 
 
+def life_print(grid):
+    row_max = max(c[0] for c in grid.keys())
+    row_min = min(c[0] for c in grid.keys())
+
+    col_max = max(c[1] for c in grid.keys())
+    col_min = min(c[1] for c in grid.keys())
+
+    for row in range(row_min,row_max+1):
+        for col in range(col_min,col_max+1):
+            if (row,col) in grid.keys() and grid.get((row,col)) > 0:
+                print("#",end="")
+            else:
+                print(".", end="")
+        print()
+
+
+def life_neighbors(c):
+    res = []
+    for row in range(-1,2):
+        for col in range(-1,2):
+            if row != 0 or col != 0:
+                res.append((c[0]+row,c[1]+col))
+    return res
+
+
+def life_calculate(grid,c):
+    val = sum([grid.get(d) if grid.get(d) is not None else 0 for d in life_neighbors(c)])
+
+    if grid.get(c) == 1 and val < 2 or val > 3:
+        return 0
+    elif grid.get(c) == 1 and 2 >= val <= 3:
+        return 1
+    elif (grid.get(c) == 0 or grid.get(c) is None) and val == 3:
+        return 1
+    else:
+        return 0
+
+
+def life(grid, rounds):
+    for round in range(rounds):
+        new_grid = {}
+        for cell in grid.keys():
+            new_grid[cell] = life_calculate(grid,cell)
+            for n in life_neighbors(cell):
+                if n not in new_grid.keys():
+                    new_grid[n] = life_calculate(grid,n)
+
+        life_print(new_grid)
+        all_keys = [k for k in new_grid.keys()]
+        for c in all_keys:
+            if new_grid[c] == 0:
+                new_grid.pop(c)
+
+        grid = new_grid
+
+    # how many are on?
+    # sum([grid.get(d) if grid.get(d) is not None else 0 for d in grid.keys()])
+    return grid
+
+
 def a_star_algorithm(grid, start_node, stop_node, get_neighbors):
     # def get_neighbors(grid,p):
 

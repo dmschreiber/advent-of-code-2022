@@ -3,18 +3,18 @@ import scrib
 import os
 
 
-def get_neighbors(grid,p):
+def get_neighbors(grid, p):
     row = p[0]
     col = p[1]
     n = []
-    if row > 0 and ord(grid[row-1][col]) <= ord(grid[row][col]) + 1:
-        n.append((row-1,col))
-    if row < len(grid)-1 and ord(grid[row+1][col]) <= ord(grid[row][col]) + 1:
-        n.append((row+1,col))
-    if col < len(grid[row])-1 and ord(grid[row][col+1]) <= ord(grid[row][col]) + 1:
-        n.append((row,col+1))
+    if row > 0 and ord(grid[row - 1][col]) <= ord(grid[row][col]) + 1:
+        n.append((row - 1, col))
+    if row < len(grid) - 1 and ord(grid[row + 1][col]) <= ord(grid[row][col]) + 1:
+        n.append((row + 1, col))
+    if col < len(grid[row]) - 1 and ord(grid[row][col + 1]) <= ord(grid[row][col]) + 1:
+        n.append((row, col + 1))
     if col > 0 and ord(grid[row][col - 1]) <= ord(grid[row][col]) + 1:
-        n.append((row,col-1))
+        n.append((row, col - 1))
 
     return n
 
@@ -28,32 +28,32 @@ def part1(input):
     rows = len(input_lines)
     for i in range(len(input_lines)):
         grid[i] = list(input_lines[i])
-    start = (0,0)
-    end = (0,0)
+    start = (0, 0)
+    end = (0, 0)
 
     for row in range(rows):
         for col in range(len(grid[row])):
             if grid[row][col] == "S":
-                start = (row,col)
+                start = (row, col)
                 grid[row][col] = "a"
             elif grid[row][col] == "E":
-                end = (row,col)
+                end = (row, col)
                 grid[row][col] = "z"
 
-    print(len(scrib.a_star_algorithm(grid, start, end, get_neighbors))-1)
+    print(len(scrib.a_star_algorithm(grid, start, end, get_neighbors)) - 1)
 
     # part 2
     starts = []
     for row in range(rows):
         for col in range(len(grid[row])):
             if grid[row][col] == "a":
-                starts.append((row,col))
+                starts.append((row, col))
 
     starts_len = []
     for s in starts:
-        path = scrib.a_star_algorithm(grid,s,end, get_neighbors)
-        if path != None:
-            starts_len.append(len(path)-1)
+        path = scrib.a_star_algorithm(grid, s, end, get_neighbors)
+        if path is not None:
+            starts_len.append(len(path) - 1)
 
     starts_len.sort()
     print(starts_len[0])
@@ -61,7 +61,7 @@ def part1(input):
 
 if __name__ == '__main__':
     d = scrib.find_filename(__file__)
-    d = d[:len(d)-3]
+    d = d[:len(d) - 3]
 
     input_file = "./data/" + d + "_input.txt"
     part1(input_file)
