@@ -84,23 +84,20 @@ def a_star_algorithm(grid, start_node, stop_node, get_neighbors):
 
     # g contains current distances from start_node to all other nodes
     # the default value (if it's not found in the map) is +infinity
-    g = {}
-
-    g[start_node] = 0
+    g = {start_node: 0}
 
     # parents contains an adjacency map of all nodes
-    parents = {}
-    parents[start_node] = start_node
+    parents = {start_node: start_node}
 
     while len(open_list) > 0:
         n = None
 
         # find a node with the lowest value of f() - evaluation function
         for v in open_list:
-            if n == None or g[v] < g[n]:
+            if n is None or g[v] < g[n]:
                 n = v
 
-        if n == None:
+        if n is None:
             print('Path does not exist!')
             return None
 
