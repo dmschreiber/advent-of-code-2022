@@ -1,17 +1,23 @@
 import re
 import scrib
 import os
+from collections import namedtuple
+
 
 def part1(input):
     with open(input) as f:
         input_lines = f.read().splitlines()
 
     count = 0
+
+    Point = namedtuple("Point", "x y")
     for l in input_lines:
         (a,b) = l.split()
+        p = Point(a,b)
         count = count + 1
 
     print(count)
+
 
 if __name__ == '__main__':
     d = scrib.find_filename(__file__)
