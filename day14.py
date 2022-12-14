@@ -1,6 +1,7 @@
 import re
 import scrib
 import os
+from collections import namedtuple
 
 
 def get_grid_p2(grid,k,max_row):
@@ -58,40 +59,42 @@ def part1(input):
 
 
 def part2(input):
+    Point = namedtuple('Point', 'row col')
     with open(input) as f:
         input_lines = f.read().splitlines()
 
     count = 0
     grid = make_grid(input_lines)
 
-    start = (0,500)
+    start = Point(0,500)
 
     count = 0
     max_row = print_grid(grid, False)
-    while True:
+    moved = True
+    while moved:
         # print_grid(grid, True)
         count = count + 1
         # print("sands {}".format(count))
         sand = start
-        last_sand = (-1, -1)
-        while sand != last_sand and sand[0] <= max_row:
+        last_sand = Point(-1, -1)
+        while sand != last_sand and sand.row <= max_row:
             # print("Current sand {} (last {})".format(sand,last_sand))
             grid[sand] = "."
             last_sand = sand
-            if get_grid_p2(grid,(sand[0]+1,sand[1]),max_row) == ".":
+            if get_grid_p2(grid,Point(sand.row+1,sand.col),max_row) == ".":
                 # print("straight down")
-                sand = (sand[0]+1,sand[1])
-            elif get_grid_p2(grid,(sand[0]+1,sand[1]-1),max_row) == ".":
+                sand = Point(sand[0]+1,sand[1])
+            elif get_grid_p2(grid,Point(sand.row+1,sand.col-1),max_row) == ".":
                 # print("down left")
-                sand = (sand[0]+1,sand[1]-1)
-            elif get_grid_p2(grid,(sand[0]+1,sand[1]+1),max_row)  == ".":
+                sand = Point(sand.row+1,sand.col-1)
+            elif get_grid_p2(grid,(sand.row+1,sand.col+1),max_row)  == ".":
                 # print("down right")
-                sand = (sand[0]+1,sand[1]+1)
+                sand = Point(sand.row+1,sand.col+1)
             grid[sand] = "o"
 
         # print("sand made row {}".format(last_sand[0]))
-        if (sand == start):
-            break
+        if sand == start:
+            moved = False
 
     count = 0
     for k in grid.keys():
@@ -104,29 +107,31 @@ def part2(input):
 def make_grid(input_lines):
     grid = {}
     rows = []
+    Point = namedtuple('Point', 'row col')
+
     for l in input_lines:
         points = l.split(" -> ")
         input_line = []
         for p in points:
             (col, row) = (int(p.split(",")[0]), int(p.split(",")[1]))
+            item = Point(row,col)
             # print(row,col)
-            input_line.append((row, col))
+            input_line.append(item)
         rows.append(input_line)
+
     for l in rows:
         for p in range(len(l) - 1):
-            if l[p][0] == l[p + 1][0]:
-                step = 1 if l[p + 1][1] > l[p][1] else -1
-                for c in range(l[p][1], l[p + 1][1] + step, step):
-                    grid[(l[p][0], c)] = "#"
-                    # if l[p][0] > max_row:
-                    #     max_row = l[p][0]
+            first = l[p]
+            second = l[p+1]
+            if first.row == second.row:
+                step = 1 if second.col > first.col else -1
+                for c in range(first.col, second.col + step, step):
+                    grid[(first.row, c)] = "#"
 
-            if l[p][1] == l[p + 1][1]:
-                step = 1 if l[p + 1][0] > l[p][0] else -1
-                for r in range(l[p][0], l[p + 1][0] + step, step):
-                    grid[(r, l[p][1])] = "#"
-                    # if r > max_row:
-                    #     max_row = l[p][0]
+            if first.col == second.col:
+                step = 1 if second.row > first.row else -1
+                for r in range(first.row, second.row + step, step):
+                    grid[(r, first.col)] = "#"
     return grid
 
 
