@@ -18,34 +18,8 @@ def part1(input):
         input_lines = f.read().splitlines()
 
     count = 0
-    grid = {}
-    rows = []
 
-    for l in input_lines:
-        points = l.split(" -> ")
-        input_line = []
-        for p in points:
-            (col,row) = (int(p.split(",")[0]),int(p.split(",")[1]))
-            # print(row,col)
-            input_line.append((row,col))
-        rows.append(input_line)
-
-    for l in rows:
-        for p in range(len(l)-1):
-            if l[p][0] == l[p+1][0]:
-                step = 1 if l[p+1][1] > l[p][1] else -1
-                for c in range(l[p][1],l[p+1][1]+step,step):
-                    grid[(l[p][0],c)] = "#"
-                    # if l[p][0] > max_row:
-                    #     max_row = l[p][0]
-
-            if l[p][1] == l[p+1][1]:
-                step = 1 if l[p+1][0] > l[p][0] else -1
-                for r in range(l[p][0],l[p+1][0]+step,step):
-                    grid[(r,l[p][1])] = "#"
-                    # if r > max_row:
-                    #     max_row = l[p][0]
-
+    grid = make_grid(input_lines)
 
     start = (0,500)
 
@@ -88,34 +62,7 @@ def part2(input):
         input_lines = f.read().splitlines()
 
     count = 0
-    grid = {}
-    rows = []
-
-    for l in input_lines:
-        points = l.split(" -> ")
-        input_line = []
-        for p in points:
-            (col,row) = (int(p.split(",")[0]),int(p.split(",")[1]))
-            # print(row,col)
-            input_line.append((row,col))
-        rows.append(input_line)
-
-    for l in rows:
-        for p in range(len(l)-1):
-            if l[p][0] == l[p+1][0]:
-                step = 1 if l[p+1][1] > l[p][1] else -1
-                for c in range(l[p][1],l[p+1][1]+step,step):
-                    grid[(l[p][0],c)] = "#"
-                    # if l[p][0] > max_row:
-                    #     max_row = l[p][0]
-
-            if l[p][1] == l[p+1][1]:
-                step = 1 if l[p+1][0] > l[p][0] else -1
-                for r in range(l[p][0],l[p+1][0]+step,step):
-                    grid[(r,l[p][1])] = "#"
-                    # if r > max_row:
-                    #     max_row = l[p][0]
-
+    grid = make_grid(input_lines)
 
     start = (0,500)
 
@@ -152,6 +99,36 @@ def part2(input):
             count = count + 1
 
     print(count)
+
+
+def make_grid(input_lines):
+    grid = {}
+    rows = []
+    for l in input_lines:
+        points = l.split(" -> ")
+        input_line = []
+        for p in points:
+            (col, row) = (int(p.split(",")[0]), int(p.split(",")[1]))
+            # print(row,col)
+            input_line.append((row, col))
+        rows.append(input_line)
+    for l in rows:
+        for p in range(len(l) - 1):
+            if l[p][0] == l[p + 1][0]:
+                step = 1 if l[p + 1][1] > l[p][1] else -1
+                for c in range(l[p][1], l[p + 1][1] + step, step):
+                    grid[(l[p][0], c)] = "#"
+                    # if l[p][0] > max_row:
+                    #     max_row = l[p][0]
+
+            if l[p][1] == l[p + 1][1]:
+                step = 1 if l[p + 1][0] > l[p][0] else -1
+                for r in range(l[p][0], l[p + 1][0] + step, step):
+                    grid[(r, l[p][1])] = "#"
+                    # if r > max_row:
+                    #     max_row = l[p][0]
+    return grid
+
 
 def print_grid(grid,print_it):
     max_row = max([k[0] for k in grid.keys()])
