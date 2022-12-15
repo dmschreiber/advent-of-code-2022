@@ -2,6 +2,8 @@ import re
 import scrib
 import os
 from collections import namedtuple
+import time
+
 
 def manhattan_distance(p1,p2):
     return abs(p1.x - p2.x) + abs(p1.y - p2.y)
@@ -24,6 +26,7 @@ def part1(input,row):
         items.append((sensor,beacon))
         count = count + 1
 
+    start = time.time()
     row_points = []
     row_range = []
     for item in items:
@@ -56,6 +59,9 @@ def part1(input,row):
 
     print(sum(points.values()))
     # part 1 38m - 5511201
+
+    print("Elapsed {}".format(time.time() - start))
+
 
 
 if __name__ == '__main__':
