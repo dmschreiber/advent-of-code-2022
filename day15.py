@@ -86,7 +86,7 @@ def part2(input,size):
     rows_range = []
     points = {}
 
-    for item in items:
+    for item in items[::-1]:
         sensor = item[0]
         beacon = item[1]
         print("Sensor {}, Beacon {}".format(sensor, beacon))
@@ -124,6 +124,10 @@ def part2(input,size):
 
     solution = set([k if points[k] else (-1,-1) for k in points.keys()])
     solution.remove((-1,-1))
+    for s in solution:
+        for item in items:
+            if manhattan_distance(Point(s[0],s[1]),item[0]) < manhattan_distance(item[0],item[1]):
+                print("distance between item {}, sensor and beacon {}".format(manhattan_distance(Point(s[0],s[1]),item[0]),manhattan_distance(item[0],item[1])))
     print(solution)
     # part 1 38m - 5511201
 
