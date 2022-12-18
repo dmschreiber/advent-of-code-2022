@@ -107,7 +107,9 @@ def part2(input):
 
     minute = 1
     states = []
-    states.append([('AA', 0, 1)])
+    State = namedtuple("State","valve_name flow_rate minute actor")
+    states.append([State(start, 0, 1, "me"),State(start, 0, 1, "el")])
+
     keep_going = True
     max_states = 10000
 
@@ -117,43 +119,54 @@ def part2(input):
         new_states = []
         for state in states:
             # open
-            current = state[len(state)-1]
-            current_valve = current[0]
-            if current[2] <= total:
-                # open if not previously open
-                if map[current_valve].flow_rate > 0 and \
-                        current_valve not in [i[0] for i in filter(lambda open: open[1] > 0, state)]:
-                    new_state = state.copy()
-                    new_state.append((current[0],map[current[0]].flow_rate,current[2]+1))
-                    new_states.append(new_state)
+            for actor in ["me","el"]:
+                actor_state = list(filter(lambda s: s.actor==actor,state))
+                current = actor_state[len(actor_state)-1]
+                current_valve = current.valve_name
+                if current.minute <= total:
+                    # open if not previously open
+                    if map[current_valve].flow_rate > 0 and \
+                            current_valve not in [i.valve_name for i in filter(lambda open: open.flow_rate > 0, state)]:
+                        new_state = state.copy()
+                        new_state.append(State(current.valve_name,map[current.valve_name].flow_rate,current.minute+1,actor))
+                        new_states.append(new_state)
 
-                #not open
-                new_states.append(state.copy())
-                keep_going = True
-            else:
-                new_states.append(state)
+                    #not open
+                    if state not in new_states:
+                        new_states.append(state.copy())
+                    keep_going = True
+                else:
+                    new_states.append(state)
 
         states = new_states
 
         # print("Before move - {}".format(states))
         new_states = []
         for state in states:
-            current = state[len(state) - 1]
-            if current[2] <= total:
-                # move to a next valve
-                for which in map[current[0]].to_valves:
-                    new_state = state.copy()
-                    new_state.append((which,0,current[2]+1))
-                    new_states.append(new_state)
-                keep_going = True
+            for actor in ["me","el"]:
+                actor_state = list(filter(lambda s: s.actor==actor,state))
+                current = actor_state[len(actor_state) - 1]
+                if current.minute <= total:
+                    # print("Before move - {}".format(state))
+                    # move to a next valve
+                    for which in map[current.valve_name].to_valves:
+                        new_state = state.copy()
+                        new_state.append(State(which,0,current.minute+1,actor))
+                        new_states.append(new_state)
+                        # print("After move - {}".format(new_state))
+                    keep_going = True
 
-            else:
-                new_states.append(state)
+                elif len(list(filter(lambda s: s.minute==current.minute,state)))==2:
+                    if state not in new_states:
+                        new_states.append(state)
+
         states = new_states
 
         states.sort(key=lambda s: sum(item[1] * (total + 1 - item[2]) for item in s), reverse=True)
         if len(states) > max_states:
             states = states[:max_states]
+
+        print("After round {}".format(len(states)))
 
     result = states
 
@@ -162,7 +175,9 @@ def part2(input):
     result.sort(key=lambda s: sum(item[1] * (total + 1 - item[2]) for item in s), reverse=True)
     print("Got {} results".format(len(result)))
     for index,r in enumerate(result[:1]):
-        print(index,sum(item[1] * (total + 1 - item[2]) for item in r), r)
+        print(index,sum(item[1] * (total + 1 - item[2]) for item in r))
+        for min in range(1,30):
+            print("Minute {}, {}".format(min,list(filter(lambda s: s.minute==min,r))))
 
 
 if __name__ == '__main__':
@@ -170,7 +185,7 @@ if __name__ == '__main__':
     d = d[:len(d)-3]
 
     input_file = "./data/" + d + "_input.txt"
-    part1(input_file)
+    # part1(input_file)
 
     start = time()
     input_file = "./data/" + d + "_test.txt"
