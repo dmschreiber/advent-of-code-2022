@@ -82,7 +82,6 @@ def part1(input):
             params = [int(p) for p in result]
             b = Blueprint(params[1],params[2],params[3],params[4],params[5],params[6])
             blueprints.append(b)
-            print(b)
         else:
             raise Exception("Number not found")
 
@@ -94,16 +93,43 @@ def part1(input):
         print("{} - {}".format(index+1,result))
     print(total)
 
+def part2(input):
+    with open(input) as f:
+        input_lines = f.read().splitlines()
+
+    count = 0
+
+    blueprints = []
+    Blueprint = namedtuple("Blueprint", "ore_cost_ore clay_cost_ore obs_cost_ore obs_cost_clay geode_cost_ore geode_cost_obs")
+    for l in input_lines:
+        result = re.findall(r"(\d+)+", l)
+        if result is not None:
+            params = [int(p) for p in result]
+            b = Blueprint(params[1],params[2],params[3],params[4],params[5],params[6])
+            blueprints.append(b)
+        else:
+            raise Exception("Number not found")
+
+    total_mins = 32
+    total = 1
+    for index,blueprint in enumerate(blueprints[:3]):
+        result = run_simulation(blueprint,total_mins)
+        total = total * result
+        print("{} - {}".format(index+1,result))
+    print(total)
+
+
 if __name__ == '__main__':
     d = scrib.find_filename(__file__)
     d = d[:len(d)-3]
 
     input_file = "./data/" + d + "_input.txt"
-    # input_file = "./data/" + d + "_test.txt"
     part1(input_file)
     # 1336 too low
     # 1358 too low
     # 1365 right
+    # input_file = "./data/" + d + "_test.txt"
+    part2(input_file)
 
     # lst = [1, 4, 4, 4, 2, 5, 6, 6, 7, 8, 9, 10]
     # print(scrib.find_most_frequent(lst))
