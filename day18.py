@@ -114,8 +114,12 @@ def part1(input):
                     neighbors = find_all_neighbors(grid,Point(x,y,z))
                     for n in neighbors:
                         sides = add_point(grid,n,sides)
+                # elif Point(z,y,z) not in grid:
+                #     neighbors = find_all_neighbors(grid,Point(x,y,z))
+                #     outside.extend(neighbors)
 
-        print("({}s),".format(x,time() - start),end="")
+
+        print("({:2.2f}s-{}),".format(time() - start,len(grid)),end="")
 
     print()
     print(sides)
