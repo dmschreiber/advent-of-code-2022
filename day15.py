@@ -86,12 +86,12 @@ def part2(input,size):
     rows_range = []
     points = {}
 
-    for item in items[::-1]:
+    for item in items:
         sensor = item[0]
         beacon = item[1]
-        print("Sensor {}, Beacon {}".format(sensor, beacon))
+        # print("Sensor {}, Beacon {}".format(sensor, beacon))
         distance = manhattan_distance(sensor, beacon)
-        print("distance {}".format(distance))
+        # print("distance {}".format(distance))
 
         for row_index in range(size+1):
             if len(rows_range)<=row_index:
@@ -111,23 +111,35 @@ def part2(input,size):
                 for x in range(point[0].x,point[1].x):
                     points[(x,row)] = True
 
-            print("row {:0>2d}".format(row),end="")
-            for x in range(0, size+1):
-                if get_item(items,Point(x,row)) != "":
-                    print(get_item(items,Point(x,row)),end="")
-                elif points.get((x, row)):
-                    print("#",end="")
-                else:
-                    print(" ",end="")
-            print()
-        print()
+        #     print("row {:0>2d}".format(row),end="")
+        #     for x in range(0, size+1):
+        #         if get_item(items,Point(x,row)) != "":
+        #             print(get_item(items,Point(x,row)),end="")
+        #         elif points.get((x, row)):
+        #             print("#",end="")
+        #         else:
+        #             print(" ",end="")
+        #     print()
+        # print()
 
-    solution = set([k if points[k] else (-1,-1) for k in points.keys()])
+    uncovered = []
+    for row,row_range in enumerate(rows_range):
+        possible_x_values = [point[0].x - 1 for point in row_range]
+        possible_x_values.extend([point[1].x for point in row_range])
+        possible_x_values = list(filter(lambda x: 0 <= x <= size, possible_x_values))
+
+        for possible_x in possible_x_values:
+            covered = False
+            for point1 in row_range:
+                if point1[0].x <= possible_x < point1[1].x:
+                    covered = True
+            if not covered:
+                uncovered.append(Point(possible_x, row))
+    uncovered = set(uncovered)
+    print(uncovered)
+
+    solution = set([k if not points[k] else (-1,-1) for k in points.keys()])
     solution.remove((-1,-1))
-    for s in solution:
-        for item in items:
-            if manhattan_distance(Point(s[0],s[1]),item[0]) < manhattan_distance(item[0],item[1]):
-                print("distance between item {}, sensor and beacon {}".format(manhattan_distance(Point(s[0],s[1]),item[0]),manhattan_distance(item[0],item[1])))
     print(solution)
     # part 1 38m - 5511201
 
