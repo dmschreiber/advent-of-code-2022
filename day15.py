@@ -86,12 +86,13 @@ def part2(input,size):
     rows_range = []
     points = {}
 
+    print("Calculating items")
     for item in items:
         sensor = item[0]
         beacon = item[1]
         # print("Sensor {}, Beacon {}".format(sensor, beacon))
+        print(".",end="")
         distance = manhattan_distance(sensor, beacon)
-        # print("distance {}".format(distance))
 
         for row_index in range(size+1):
             if len(rows_range)<=row_index:
@@ -100,27 +101,7 @@ def part2(input,size):
                 d_row = distance - manhattan_distance(sensor,Point(sensor.x,row_index))
                 rows_range[row_index].append((Point(sensor.x-d_row,row_index),Point(sensor.x+d_row+1,row_index)))
 
-
-
-        for row,row_range in enumerate(rows_range):
-            for x in range(0, size):
-                points[(x, row)] = False
-
-            for point in row_range:
-                # print("Row {}, Checking {}-{}".format(row,max(point[0].x,0),min(point[1].x,size+1)))
-                for x in range(point[0].x,point[1].x):
-                    points[(x,row)] = True
-
-        #     print("row {:0>2d}".format(row),end="")
-        #     for x in range(0, size+1):
-        #         if get_item(items,Point(x,row)) != "":
-        #             print(get_item(items,Point(x,row)),end="")
-        #         elif points.get((x, row)):
-        #             print("#",end="")
-        #         else:
-        #             print(" ",end="")
-        #     print()
-        # print()
+    print("Calculating coverage")
 
     uncovered = []
     for row,row_range in enumerate(rows_range):
@@ -135,12 +116,13 @@ def part2(input,size):
                     covered = True
             if not covered:
                 uncovered.append(Point(possible_x, row))
-    uncovered = set(uncovered)
+    uncovered = list(set(uncovered))
     print(uncovered)
+    print(uncovered[0].x*4000000+uncovered[0].y)
 
-    solution = set([k if not points[k] else (-1,-1) for k in points.keys()])
-    solution.remove((-1,-1))
-    print(solution)
+    # solution = set([k if not points[k] else (-1,-1) for k in points.keys()])
+    # solution.remove((-1,-1))
+    # print(solution)
     # part 1 38m - 5511201
 
     print("Elapsed {}".format(time.time() - start))
@@ -155,9 +137,9 @@ if __name__ == '__main__':
     row = 2000000
     size = 4000000
 
-    size = 20
-    row = 10
-    input_file = "./data/" + d + "_test.txt"
+    # size = 20
+    # row = 10
+    # input_file = "./data/" + d + "_test.txt"
 
     part1(input_file,row)
     part2(input_file,size)
