@@ -43,7 +43,7 @@ def find_filename(input_string):
     return result
 
 def find_int(input_string):
-    result = re.search(r"(\d+)",input_string)
+    result = re.search(r"(-?\d+)",input_string)
     if result is not None:
         return int(result.group(0))
     else:
