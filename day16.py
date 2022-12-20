@@ -81,9 +81,9 @@ def part1(input):
     total = 30
 
     result.sort(key=lambda s: sum(item[1] * (total + 1 - item[2]) for item in s), reverse=True)
-    print("Got {} results".format(len(result)))
+
     for index,r in enumerate(result[:1]):
-        print(index,sum(item[1] * (total + 1 - item[2]) for item in r), r)
+        print(sum(item[1] * (total + 1 - item[2]) for item in r))
 
 
 def part2(input):
@@ -207,7 +207,8 @@ def part2(input):
             if max_minute is None or max_minute < builtins.max(s.minute for s in state):
                 max_minute = builtins.max([s.minute for s in state])
 
-        print("After minutes {}, {} states".format(max_minute, len(states)))
+        # print("After minutes {}, {} states".format(max_minute, len(states)))
+        print(".",end="")
 
         if max_minute > total:
             keep_going = False
@@ -217,11 +218,11 @@ def part2(input):
     total = 26
 
     result.sort(key=lambda s: sum(item[1] * (total + 1 - item[2]) for item in s), reverse=True)
-    print("Got {} results".format(len(result)))
+
     for index,r in enumerate(result[:1]):
-        print(index,sum(item[1] * (total + 1 - item[2]) for item in r))
-        for my_min in range(1,30):
-            print("Minute {}, {}".format(my_min,list(filter(lambda s: s.minute==my_min,r))))
+        print(sum(item[1] * (total + 1 - item[2]) for item in r))
+        # for my_min in range(1,30):
+        #     print("Minute {}, {}".format(my_min,list(filter(lambda s: s.minute==my_min,r))))
 
 
 if __name__ == '__main__':
@@ -229,7 +230,7 @@ if __name__ == '__main__':
     d = d[:len(d)-3]
 
     input_file = "./data/" + d + "_input.txt"
-    # part1(input_file)
+    part1(input_file)
 
     start = time()
     # input_file = "./data/" + d + "_test.txt"
