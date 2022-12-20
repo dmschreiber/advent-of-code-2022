@@ -12,6 +12,10 @@ class Item:
 
 
 def move_item(list_items,which):
+    if which >= len(list_items):
+        print("trying to index {}".format(which))
+        exit(-1)
+
     item = list_items[which]
     prev_item = item.previous
     next_item = item.next
@@ -26,8 +30,9 @@ def move_item(list_items,which):
         # find new place and add it
         curr = item
         curr_index = 0
-        loop_range = item.num % len(list_items)
-        for i in range(item.num):
+        loop_range = ((item.num -1) % (len(list_items)-1)) + 1
+        # print(loop_range,item.num)
+        for i in range(loop_range):
             curr_index = curr.next
             curr = list_items[curr.next]
 
@@ -45,7 +50,8 @@ def move_item(list_items,which):
 
         # find new place and add it
         curr = item
-        for i in range(abs(item.num)):
+        loop_range = ((abs(item.num) -1) % (len(list_items)-1)) + 1
+        for i in range(loop_range):
             curr_index = curr.previous
             curr = list_items[curr.previous]
 
@@ -74,24 +80,9 @@ def part1(input, decryption, mixing_times):
         i = Item(next_item,prev_item,decryption * scrib.find_int(l))
         items.append(i)
 
-    print("Before")
-    curr = items[0]
-    for index in range(len(items)):
-        print(curr.num, end=",")
-        curr = items[curr.next]
-    print()
-
-    for move_index in range(len(items)*mixing_times):
-        items = move_item(items,move_index)
-
-    print("item 0 - next {}, prev {}".format(items[0].next, items[0].previous))
-
-    print("After")
-    curr = items[0]
-    for index in range(len(items)):
-        print(curr.num, end=",")
-        curr = items[curr.next]
-    print()
+    for j in range(mixing_times):
+        for move_index in range(len(items)):
+            items = move_item(items,move_index)
 
     curr = items[0]
     start_index = 0
@@ -102,14 +93,12 @@ def part1(input, decryption, mixing_times):
         else:
             curr = items[curr.next]
 
-    print("zero is at {} - {}".format(start_index,items[start_index].num))
     curr = items[start_index]
     total = 0
 
     for i in range(3):
         for j in range(1000):
             curr = items[curr.next]
-        print((i+1)*(j+1),curr.num)
         total = total + curr.num
 
     print(total)
