@@ -45,8 +45,9 @@ def part2(input):
     result2 = monkeys["root"].split(" + ")[1]
     last_result1 = ""
     last_result2 = ""
+    human = "humn"
 
-    monkeys.pop("humn")
+    monkeys.pop(human)
     while last_result2 != result2 or last_result1 != result1:
         last_result1 = result1
         for key in monkeys.keys():
@@ -57,8 +58,8 @@ def part2(input):
             result2 = result2.replace(key,"(" + monkeys[key] + ")")
 
 
-    humn = Symbol('humn')
-    print(result1, " = ", str(int(eval(result2))))
+    humn = Symbol(human)
+
     result = result1 + " - " + str(int(eval(result2)))
     solutions = solve(eval(result))
     for s in solutions:
@@ -73,9 +74,3 @@ if __name__ == '__main__':
     part1(input_file)
     part2(input_file)
 
-    # lst = [1, 4, 4, 4, 2, 5, 6, 6, 7, 8, 9, 10]
-    # print(scrib.find_most_frequent(lst))
-    # print(scrib.find_occurances(lst)[4])
-    # print(scrib.find_even(lst))
-    # print(scrib.capitalize_words(["python", "javaScript", "c++"]))
-    # print(scrib.reverse_list(lst))
