@@ -39,7 +39,7 @@ def part1(input):
     direction_start_state = 0
     keep_going = True
     round = 1
-    while keep_going and round <= 10:
+    while keep_going:
         how_many_move = 0
         new_positions = []
         proposed_moves = []
@@ -87,20 +87,21 @@ def part1(input):
         direction_start_state = (direction_start_state + 1) % len(movements)
 
 
-        min_row = min(k.row for k in elves)
-        max_row = max(k.row for k in elves)
-        min_col = min(k.column for k in elves)
-        max_col = max(k.column for k in elves)
+    min_row = min(k.row for k in elves)
+    max_row = max(k.row for k in elves)
+    min_col = min(k.column for k in elves)
+    max_col = max(k.column for k in elves)
 
-        for row in range(min_row,max_row+1):
-            for col in range(min_col,max_col+1):
-                if (row,col) in elves:
-                    print("#",end="")
-                else:
-                    print(".",end="")
-            print()
+        # for row in range(min_row,max_row+1):
+        #     for col in range(min_col,max_col+1):
+        #         if (row,col) in elves:
+        #             print("#",end="")
+        #         else:
+        #             print(".",end="")
+        #     print()
 
     print((max_row-min_row+1) * (max_col-min_col+1) - len(elves))
+    print("Round {}".format(round-1))
 
 if __name__ == '__main__':
     d = scrib.find_filename(__file__)
