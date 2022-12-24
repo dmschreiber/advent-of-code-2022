@@ -2,6 +2,7 @@ import re
 import scrib
 import os
 from collections import namedtuple
+from time import time
 
 Point = namedtuple("Point", "row column")
 
@@ -47,7 +48,8 @@ def part1(input):
         round = round + 1
         keep_going = False
         for elf in elves:
-            if len([value for value in [add_point(elf,n) for n in neighbors] if value in elves]) != 0:
+
+            if len(set([add_point(elf,n) for n in neighbors]).intersection(elves)) != 0:
                 proposed_move = None
                 direction_state = direction_start_state
 
@@ -55,11 +57,10 @@ def part1(input):
                     movement = movements[direction_state]
                     step = steps[direction_state]
 
-                    if len([value for value in [add_point(elf,s) for s in step] if value in elves]) == 0 and proposed_move is None:
+                    if len(set([add_point(elf,s) for s in step]).intersection(elves)) == 0 and proposed_move is None:
                         proposed_move = add_point(elf,movement)
                         break
-                    # else:
-                    #     print("{} can't move {}".format(elf,direction_state))
+
                     direction_state = (direction_state + 1) % len(movements)
 
                 if proposed_move is not None:
@@ -73,6 +74,11 @@ def part1(input):
 
         check_moves = scrib.find_occurances([pm[1] for pm in proposed_moves])
         check_moves = list(filter(lambda k: check_moves[k] > 1, check_moves.keys()))
+
+        # new_positions.extend([pm[0] for pm in proposed_moves if pm[1] in check_moves])
+        # new_positions.extend([pm[1] for pm in proposed_moves if pm[1] not in check_moves])
+        # how_many_move = len([pm[1] for pm in proposed_moves if pm[1] not in check_moves])
+        # keep_going = how_many_move > 0
         for pm in proposed_moves:
             if pm[1] in check_moves:
                 new_positions.append(pm[0])
@@ -109,8 +115,9 @@ if __name__ == '__main__':
 
     input_file = "./data/" + d + "_input.txt"
     # input_file = "./data/" + d + "_test.txt"
+    start = time()
     part1(input_file)
-
+    print("Elapsed {}".format(time()-start))
     # lst = [1, 4, 4, 4, 2, 5, 6, 6, 7, 8, 9, 10]
     # print(scrib.find_most_frequent(lst))
     # print(scrib.find_occurances(lst)[4])
