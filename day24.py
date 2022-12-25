@@ -2,6 +2,7 @@ import re
 import scrib
 import os
 from collections import namedtuple
+from time import time
 
 Point = namedtuple("Point", "row col minute")
 Blizzard = namedtuple("Blizzard", "row col direction")
@@ -131,12 +132,14 @@ def part1(input):
             if grid[(row,col)] in directions:
                 blizzards.append(Blizzard(row,col,directions.index(grid[(row,col)])))
 
-
-    # path = a_star_algorithm(blizzards,height,width,start_position,end_position)
-    start_position = Point(height,width-1,286)
+    start = time()
+    path = a_star_algorithm(blizzards,height,width,start_position,end_position)
+    print("at the end in {} sec".format(path))
+    start_position = Point(height,width-1,max(p.minute for p in path))
     end_position = Point(-1,0,-1)
     path = a_star_algorithm(blizzards,height,width,start_position,end_position)
 
+    print("back home in {} sec".format(time()-start))
     print("Path back home {}".format(path))
     back_home_minute = max(p.minute for p in path)
     print("Back home at minute {}".format(back_home_minute))
@@ -146,6 +149,7 @@ def part1(input):
     end_position = Point(height,width-1,-1)
     path = a_star_algorithm(blizzards,height,width,start_position,end_position)
 
+    print("done in {} sec".format(time()-start))
     print("Path out second time {}".format(path))
     print("Part 2 final answer {}".format(max(p.minute for p in path)))
 
