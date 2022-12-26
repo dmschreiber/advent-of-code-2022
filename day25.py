@@ -26,6 +26,8 @@ def convert_from_snafu(number):
         result = result + 5 ** index * snafu_digits_values[snafu_digits.index(d)]
 
     return result
+
+
 def convert_to_snafu(n):
     b = 5
     if n == 0:
